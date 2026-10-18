@@ -1,6 +1,6 @@
 # Verification — 2026-10-18 JST
 
-Confirmed: the local application builds, all 34 automated checks pass, and the browser flows below were exercised in real Chrome. Public deployment, a live Google sign-in, live cross-device cloud sync and real Workers AI inference remain unverified. The overall publication goal is not complete.
+Confirmed: the app is deployed at `https://fliq.gn8hoover.workers.dev`, all 34 automated checks pass, and public capture/refresh/both-flick flows were exercised in real Chrome. Live Google sign-in, cross-device cloud sync and real Workers AI inference remain unverified because Google Cloud requires the Owner to enable two-step verification before app credentials can be configured. The overall goal is not complete.
 
 ## Environment and commands
 
@@ -10,14 +10,19 @@ Windows; Node.js 24.14.0. Development URL: `http://127.0.0.1:5178/`. Production-
 | --- | --- |
 | `npm install` | Dependencies installed; lockfile recorded. |
 | `npm run db:local` | Initial D1 migration applied successfully; 8 SQL commands. |
-| `npm test` | PASS — 34 tests in 5 files, latest full run at 08:03:18 JST. |
+| `npm test` | PASS — 34 tests in 5 files; initial recorded full run at 08:03:18 JST, latest full run at 13:25:32 JST after real production origin/D1 configuration. |
 | `npm test -- tests/shell.test.ts` | PASS — 3 focused shell/cache checks at 08:12:31 JST, after the initial caption-spacing adjustment. |
 | `npm run lint` | PASS — no errors or warnings. |
 | `npm run build` | PASS — TypeScript and both Worker/client builds. Latest client JavaScript: 493.04 kB, gzip 154.42 kB; CSS: 29.27 kB, gzip 7.34 kB. |
 | `npm audit --audit-level=high` | PASS — 0 vulnerabilities. |
 | `npm run deploy:check` | PASS — dry run, 13 static files, Worker upload 894.38 KiB / gzip 152.28 KiB. This did not publish. |
-| `npm run release:check` | EXPECTED BLOCK — real HTTPS origin and D1 ID are placeholders. The guard reports the missing configuration. Tests also verify a valid JSONC fixture is accepted. |
-| `npx wrangler whoami` | NOT AUTHENTICATED. No account was created and no remote resource was provisioned. |
+| `npm run release:check` | PASS with the real HTTPS origin and D1 ID. During preparation it correctly rejected placeholders; tests retain coverage for valid and placeholder JSONC fixtures. |
+| `npx wrangler whoami` | AUTHENTICATED in the Owner's existing account with the six approved scopes. CLI confirms encrypted credential storage with the key in Windows Credential Manager. |
+| `npm run db:remote` | PASS — migration `0001_initial.sql` applied to real D1 `fliq-db`, 8 SQL commands. |
+| `npm run deploy` | PASS — guard, TypeScript, Vite build, static assets, Worker upload and cron deployment succeeded. Initial version `931856c0-bf84-441a-99e3-6d65ab251a59`. |
+| `npx wrangler secret put SESSION_SECRET --config wrangler.production.jsonc` | PASS — 48 random bytes generated and sent directly through stdin; no secret value printed or saved in the project. Name-only listing confirms the secret exists. |
+| `npx wrangler deployments list --config wrangler.production.jsonc` | Latest version `4ccb89ed-9ca5-4aef-a60f-3735a55e85bf` deployed at 100% after the session-secret change. |
+| HTTPS `/api/health` | HTTP 200; `{"ok":true,"googleConfigured":false,"aiConfigured":true}`. This verifies binding configuration, not real AI inference. |
 | `npm run writing:doctor` in parent workspace | natural and textlint available; semantic analysis not run. |
 | `npm run lint:ja -- fliq/README.md` in parent workspace | Completed with 4 lexical suggestions, 0 execution errors. The terms at L29 (照合), L31 (検査), and L39 (検査 twice) were retained as accurate technical descriptions. An exit code 0 is not treated as a writing-quality certificate. |
 
@@ -56,6 +61,14 @@ Screenshots contain synthetic verification tasks, not the Owner's personal task 
 - [Mobile editor](screenshots/mobile-sheet.jpg)
 - [Desktop overview](screenshots/desktop.jpg)
 - [Editable full-screen loading skeleton](screenshots/loading.jpg)
+- [Public desktop capture](screenshots/public-desktop.jpg)
+- [Public mobile capture](screenshots/public-mobile.jpg)
+
+### Public deployment check
+
+The first Chrome navigation to the new public URL reported `ERR_SSL_VERSION_OR_CIPHER_MISMATCH`. A later HTTPS API request succeeded; reloading that same Chrome tab opened the application normally. No security warning or certificate validation was bypassed; the initial transient failure's cause was not independently diagnosed.
+
+On the public URL, saved `公開テスト 10月18日` with note `数値120と日本語を保持`, reloaded and confirmed both survived. Actual right drag changed inbox to doing; left drag restored inbox. At a 390×844 viewport, document width was 375px (no horizontal overflow). The public account sheet explicitly said Google login was unconfigured and disabled its button. The viewport override was reset afterwards. These public guest checks supplement the broader local browser matrix above; they do not demonstrate cloud synchronization or provider authentication.
 
 ### Controlled first-load check
 
@@ -69,10 +82,10 @@ The fixture was `読込中に入力したメモ` followed by `数値120、10月1
 | --- | --- |
 | Public GitHub repository | PUBLISHED on 2026-10-18 JST: `https://github.com/imhoover/fliq-tasks`, repository ID `1423923157`, visibility public. Owner selected an existing Google identity; browser sign-in succeeded as `imhoover`. All 45 tracked files were published in commit `285c1035e517df3444f2addfd9af2af12b723499`. `git diff origin/main --stat` reported no differences. |
 | GitHub Actions | PASS: [run 39090526686](https://github.com/imhoover/fliq-tasks/actions/runs/39090526686), job `117566099254`, conclusion success. Clean install, tests, lint, build, high-severity dependency audit and deployment dry run all succeeded on GitHub. This is not a Cloudflare deployment. |
-| Public Cloudflare deployment | NOT DEPLOYED. Browser sign-in succeeded in the Owner's existing account. Wrangler's official consent page is awaiting confirmation for six scoped permissions; CLI authentication and real D1 ID/origin are still missing. |
-| Real Google OAuth | NOT RUN. Requires the Owner's OAuth client, secret, consent configuration and registered callback URI. |
+| Public Cloudflare deployment | DEPLOYED and opened in real Chrome at `https://fliq.gn8hoover.workers.dev`. Real D1 migration, AI binding, session secret and daily cleanup configured. Public guest capture/refresh/both-flick checks passed. |
+| Real Google OAuth | NOT RUN. Google Cloud identifies the selected account but blocks console access until the Owner enables two-step verification. Requires the app's OAuth client, secret, consent configuration and registered callback URI after that step. |
 | Live account isolation / cross-device sync | NOT RUN. Requires a real deployed database, valid provider sign-in and two authorized test accounts/devices. |
-| Real Workers AI | NOT RUN. Requires a deployed AI binding and authenticated user. Japanese breakdown quality and response time have not been benchmarked. |
+| Real Workers AI | NOT RUN. Binding is deployed; app inference requires a real authenticated user. Japanese breakdown quality and response time have not been benchmarked. |
 | Actual iPhone Safari / home-screen launch / Japanese IME | NOT RUN. Implemented with web standards and reviewed, but not exercised on an actual iPhone. |
 | OS reduced-motion setting | Source reviewed; no actual operating-system preference was changed during testing. |
 
@@ -80,4 +93,4 @@ Do not mark these pending items passed based on unit fixtures, a dry run or a re
 
 ### External handoff audit
 
-The original account-selection blocker was recorded across the initial goal turn and two continuations. The Owner subsequently selected an existing Google identity; GitHub sign-in succeeded as `imhoover`, the public repository was created, all tracked source files were uploaded, and its initial CI run passed. The Owner later reported completing Cloudflare sign-in; the controlled browser subsequently reached the existing Cloudflare account dashboard with the selected Google identity. Wrangler was started with five explicit scopes, plus its required offline access. The official consent page lists six permissions and is awaiting the Owner's confirmation before Authorize is clicked. Wrangler remains unauthenticated, production origin/D1 ID are placeholders, and only `.dev.vars.example` exists. No new account was created. Authentication screenshots stay under ignored `artifacts/`, outside the public repository files. Deployment and live-provider tests still require the scoped authorization and app-specific OAuth configuration.
+The original account-selection blocker was recorded across the initial goal turn and two continuations. The Owner subsequently selected an existing Google identity; GitHub sign-in succeeded as `imhoover`, the public repository was created, all tracked source files were uploaded, and its initial CI run passed. Cloudflare browser sign-in then succeeded. The Owner explicitly approved the six-permission Wrangler connection. The original waiting CLI request had expired, so a fresh device request with identical scopes was authorized without asking again. CLI login succeeded with encrypted credential storage. D1 was created and migrated, the app deployed, and public guest checks passed. No new account or paid plan was created. Google Cloud now blocks the selected account on its two-step-verification page. The Owner has been asked to complete that account-security setup personally; OAuth app credentials, real login/sync/AI and actual iPhone checks remain pending. Authentication screenshots stay under ignored `artifacts/`, outside the public repository files.

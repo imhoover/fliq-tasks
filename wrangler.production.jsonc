@@ -10,12 +10,12 @@
     "not_found_handling": "single-page-application",
     "run_worker_first": ["/api/*", "/auth/*"],
   },
-  "vars": { "APP_ORIGIN": "https://fliq.YOUR_SUBDOMAIN.workers.dev" },
+  "vars": { "APP_ORIGIN": "https://fliq.gn8hoover.workers.dev" },
   "d1_databases": [
     {
       "binding": "DB",
       "database_name": "fliq-db",
-      "database_id": "00000000-0000-0000-0000-000000000000",
+      "database_id": "640934e9-97c5-4276-8a09-d862b17ca282",
       "migrations_dir": "migrations",
     },
   ],

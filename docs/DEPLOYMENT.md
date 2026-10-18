@@ -1,6 +1,6 @@
 # Deployment and remaining external setup
 
-The Owner authorized a public GitHub repository and Cloudflare deployment, and selected an existing Google identity for sign-in. No new account or paid plan is authorized. GitHub browser sign-in succeeded as `imhoover`, and Cloudflare browser sign-in succeeded in the Owner's existing account. The scoped Wrangler authorization is awaiting confirmation on the official consent page; app-specific Google OAuth credentials remain missing. Do not claim a deployed app URL or live app authentication result until they exist.
+The Owner authorized a public GitHub repository and Cloudflare deployment, selected an existing Google identity, and explicitly approved the scoped Wrangler connection. No new account or paid plan is authorized. The app is deployed at [Fliq](https://fliq.gn8hoover.workers.dev); guest capture and flicks were verified there in Chrome. Google app credentials and authenticated live-provider tests remain pending. Google Cloud currently blocks access until the Owner enables two-step verification; that account-security change requires the Owner's own interaction.
 
 ## 1. GitHub
 
@@ -19,7 +19,9 @@ The CI workflow uses GitHub's official checkout/setup-node v7 actions, read-only
 
 Use the Owner's existing account. `npx wrangler whoami` must report it is authenticated. If needed, the Owner completes Wrangler's authorization in the browser. Do not use a temporary preview account as a substitute for an Owner-owned deployment.
 
-The prepared authorization requests `account:read user:read workers_scripts:write d1:write ai:write`. Wrangler also requests `offline_access` to maintain its session. The consent screen shows six permissions: User Read, Background Access, Account Read, Workers Scripts Write, D1 Write and Workers AI write. No permission has been granted by this task yet. This authorization can affect other resources in the selected account, so the Owner must confirm the grant.
+The Owner approved and the CLI confirmed `account:read user:read workers_scripts:write d1:write ai:write`, plus `offline_access`. The consent screen showed six permissions: User Read, Background Access, Account Read, Workers Scripts Write, D1 Write and Workers AI write. Credentials are encrypted by Wrangler with the encryption key held in Windows Credential Manager using the official `@napi-rs/keyring@1.3.0` dependency. Wrangler's warning about other default scopes reflects the deliberately restricted grant; those unrelated scopes were not added.
+
+Confirmed resources: D1 `fliq-db`, ID `640934e9-97c5-4276-8a09-d862b17ca282`, region APAC. Migration `0001_initial.sql` applied remotely with 8 successful SQL commands. The existing account subdomain is `gn8hoover.workers.dev`; `APP_ORIGIN` is `https://fliq.gn8hoover.workers.dev`. The commands below describe the initial provisioning procedure; do not create a duplicate database.
 
 ```sh
 npx wrangler d1 create fliq-db
@@ -33,6 +35,8 @@ npm run db:remote
 ```
 
 ## 3. Google OAuth and secrets
+
+`SESSION_SECRET` is configured. It was generated from 48 random bytes and piped directly into Wrangler without printing or writing its value to a project file. A name-only secret listing confirmed it exists. `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` are not configured. The public account sheet truthfully disables Google login until all required settings exist.
 
 In the existing Google Cloud project, configure an OAuth web client and consent screen. Redirect URI: `<APP_ORIGIN>/auth/callback`. Development redirect URI, if needed: `http://127.0.0.1:5178/auth/callback`. Only `openid profile` is requested. Add authorized test users while the consent screen is in testing mode. Any publishing/verification requirements must be completed in Google's console before claiming unrestricted public login.
 
@@ -59,6 +63,8 @@ npm run deploy
 ```
 
 `deploy:check` bundles without publishing and is not proof of a successful remote deployment. `deploy` refuses placeholder origin/database settings. Do not enable paid Cloudflare plans or expand account permissions without the Owner's approval.
+
+On 2026-10-18 JST, `npm run deploy` completed successfully. Initial upload version: `931856c0-bf84-441a-99e3-6d65ab251a59`. The subsequent session-secret change deployed version `4ccb89ed-9ca5-4aef-a60f-3735a55e85bf` at 100%. Daily cleanup is scheduled at `0 3 * * *` UTC. `/api/health` returned `{"ok":true,"googleConfigured":false,"aiConfigured":true}`. The AI flag confirms the deployed binding, not a successful inference or authenticated app flow.
 
 ## 5. Live acceptance tests
 

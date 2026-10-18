@@ -2,7 +2,7 @@
 
 iPhoneを優先したタスク管理Webアプリです。PCにも対応します。ホーム画面への追加に対応するPWAとして作成しており、ネイティブiOSアプリは今回の対象外です。
 
-ローカル実装と主要操作の検証を終えています。公開レポジトリは [imhoover/fliq-tasks](https://github.com/imhoover/fliq-tasks) です。Cloudflareへの本番公開、実際のGoogleログインとWorkers AIの接続テストは未完了です。結果は [docs/VERIFICATION.md](docs/VERIFICATION.md) に記録します。
+公開アプリは [Fliq](https://fliq.gn8hoover.workers.dev)、公開レポジトリは [imhoover/fliq-tasks](https://github.com/imhoover/fliq-tasks) です。端末への保存とフリック操作は公開版でも確認済みです。Googleログインの設定とWorkers AIの実接続テストは未完了のため、現在は端末に保存する使い方で利用できます。結果は [docs/VERIFICATION.md](docs/VERIFICATION.md) に記録します。
 
 ## 開いてすぐメモを残す
 
