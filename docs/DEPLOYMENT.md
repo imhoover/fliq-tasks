@@ -1,6 +1,6 @@
 # Deployment and remaining external setup
 
-The Owner authorized a public GitHub repository and Cloudflare deployment, and selected an existing Google identity for sign-in. No new account or paid plan is authorized. GitHub browser sign-in succeeded as `imhoover`. Cloudflare sign-in is awaiting the Owner's confirmation of the terms shown on its login form; Wrangler authorization and app-specific Google OAuth credentials remain missing. Do not claim a deployed app URL or live app authentication result until they exist.
+The Owner authorized a public GitHub repository and Cloudflare deployment, and selected an existing Google identity for sign-in. No new account or paid plan is authorized. GitHub browser sign-in succeeded as `imhoover`, and Cloudflare browser sign-in succeeded in the Owner's existing account. The scoped Wrangler authorization is awaiting confirmation on the official consent page; app-specific Google OAuth credentials remain missing. Do not claim a deployed app URL or live app authentication result until they exist.
 
 ## 1. GitHub
 
@@ -18,6 +18,8 @@ The CI workflow uses GitHub's official checkout/setup-node v7 actions, read-only
 ## 2. Cloudflare resource configuration
 
 Use the Owner's existing account. `npx wrangler whoami` must report it is authenticated. If needed, the Owner completes Wrangler's authorization in the browser. Do not use a temporary preview account as a substitute for an Owner-owned deployment.
+
+The prepared authorization requests `account:read user:read workers_scripts:write d1:write ai:write`. Wrangler also requests `offline_access` to maintain its session. The consent screen shows six permissions: User Read, Background Access, Account Read, Workers Scripts Write, D1 Write and Workers AI write. No permission has been granted by this task yet. This authorization can affect other resources in the selected account, so the Owner must confirm the grant.
 
 ```sh
 npx wrangler d1 create fliq-db
