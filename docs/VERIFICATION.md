@@ -67,8 +67,8 @@ The fixture was `読込中に入力したメモ` followed by `数値120、10月1
 
 | Item | Status and missing prerequisite |
 | --- | --- |
-| Public GitHub repository | CREATED on 2026-10-18 JST: `https://github.com/imhoover/fliq-tasks`, repository ID `1423923157`, visibility public. Owner selected an existing Google identity; browser sign-in succeeded as `imhoover`. Source upload is being prepared. |
-| GitHub Actions | PREPARED, NOT RUN. Requires repository creation and push. |
+| Public GitHub repository | PUBLISHED on 2026-10-18 JST: `https://github.com/imhoover/fliq-tasks`, repository ID `1423923157`, visibility public. Owner selected an existing Google identity; browser sign-in succeeded as `imhoover`. All 45 tracked files were published in commit `285c1035e517df3444f2addfd9af2af12b723499`. `git diff origin/main --stat` reported no differences. |
+| GitHub Actions | PASS: [run 39090526686](https://github.com/imhoover/fliq-tasks/actions/runs/39090526686), job `117566099254`, conclusion success. Clean install, tests, lint, build, high-severity dependency audit and deployment dry run all succeeded on GitHub. This is not a Cloudflare deployment. |
 | Public Cloudflare deployment | NOT DEPLOYED. Browser and Wrangler are unauthenticated; real D1 ID/origin are missing. |
 | Real Google OAuth | NOT RUN. Requires the Owner's OAuth client, secret, consent configuration and registered callback URI. |
 | Live account isolation / cross-device sync | NOT RUN. Requires a real deployed database, valid provider sign-in and two authorized test accounts/devices. |
@@ -80,4 +80,4 @@ Do not mark these pending items passed based on unit fixtures, a dry run or a re
 
 ### External handoff audit
 
-The original account-selection blocker was recorded across the initial goal turn and two continuations. The Owner subsequently selected an existing Google identity; GitHub sign-in succeeded as `imhoover`, and an empty public repository was created. Cloudflare's sign-in form explicitly states that continuing accepts its terms, so confirmation is pending before continuing that form. Wrangler remains unauthenticated, production origin/D1 ID are placeholders, and only `.dev.vars.example` exists. No new account was created. Authentication screenshots stay under ignored `artifacts/`, outside the public repository files. Deployment and live-provider tests still require Cloudflare access and app-specific OAuth configuration.
+The original account-selection blocker was recorded across the initial goal turn and two continuations. The Owner subsequently selected an existing Google identity; GitHub sign-in succeeded as `imhoover`, the public repository was created, all tracked source files were uploaded, and its initial CI run passed. Cloudflare's sign-in form explicitly states that continuing accepts its terms, so confirmation is pending before continuing that form. Wrangler remains unauthenticated, production origin/D1 ID are placeholders, and only `.dev.vars.example` exists. No new account was created. Authentication screenshots stay under ignored `artifacts/`, outside the public repository files. Deployment and live-provider tests still require Cloudflare access and app-specific OAuth configuration.

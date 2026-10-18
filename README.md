@@ -36,7 +36,7 @@ iPhoneを優先したタスク管理Webアプリです。PCにも対応します
 | ESLint 10.13.0 / typescript-eslint / React Hooks plugin | 未使用コードやHooksの誤用を検出するため。 |
 | Wrangler 4.151.1 / Node.js 24 | D1の準備、本番向けのパッケージ確認、Workersへの公開を再現可能なコマンドで行うため。 |
 | jsonc-parser 3.3.1 | 公開前のチェックで、設定ファイルのコメントと末尾カンマを正しく読み取るため。 |
-| GitHub Actions | リポジトリへの変更時にテスト、静的検査、ビルド、依存関係の検査を実行するため。ワークフローは準備済みで、GitHub上での実行は未確認です。 |
+| GitHub Actions | リポジトリへの変更時にテスト、静的検査、ビルド、依存関係の検査を実行するため。[初回の実行は成功しています](https://github.com/imhoover/fliq-tasks/actions/runs/39090526686)。 |
 
 ## ローカルで動かす
 

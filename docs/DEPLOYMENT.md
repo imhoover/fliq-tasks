@@ -6,14 +6,14 @@ The Owner authorized a public GitHub repository and Cloudflare deployment, and s
 
 Created public repository: [imhoover/fliq-tasks](https://github.com/imhoover/fliq-tasks), repository ID `1423923157`. Browser sign-in and connected repository metadata both identify `imhoover` as the owner.
 
-Publish only this standalone `fliq` directory, never the parent CEO workspace. A local repository is initialized on `main`. The browser created an empty repository; the connected GitHub tools can upload its reviewed files without creating a new credential.
+Only this standalone `fliq` directory was published, never the parent CEO workspace. The browser created the repository; the existing GitHub connector uploaded all 45 tracked files. Public source commit: `285c1035e517df3444f2addfd9af2af12b723499`. Public source and the local tracked files were compared with `git diff origin/main --stat`; no differences were reported.
 
 ```sh
 git remote add origin https://github.com/imhoover/fliq-tasks.git
 git push -u origin main
 ```
 
-The prepared CI workflow uses GitHub's official checkout/setup-node v7 actions, read-only repository permissions and Node 24. Do not mark CI passed until the run finishes on GitHub.
+The CI workflow uses GitHub's official checkout/setup-node v7 actions, read-only repository permissions and Node 24. [Initial run 39090526686](https://github.com/imhoover/fliq-tasks/actions/runs/39090526686) completed successfully: clean install, tests, lint, build, dependency audit and deployment dry run all passed. The dry run does not publish the app.
 
 ## 2. Cloudflare resource configuration
 
