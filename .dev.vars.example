@@ -1,0 +1,3 @@
+GOOGLE_CLIENT_ID=your-client-id.apps.googleusercontent.com
+GOOGLE_CLIENT_SECRET=configure-in-cloudflare-secrets
+SESSION_SECRET=generate-at-least-32-random-bytes
